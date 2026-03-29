@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Save, Loader2, ChevronDown, CheckCircle2, Link as LinkIcon } from 'lucide-react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import API_URL from '../config/api';
 
 const PAGES = ['home', 'about', 'services', 'projects', 'team', 'contact', 'blog', 'industries', 'careers', 'case-studies', 'documentation'];
 
@@ -31,7 +32,7 @@ export default function GlobalSeo() {
     setFetching(true);
     setSuccessMsg('');
     try {
-      const { data } = await axios.get(`http://localhost:5001/api/seo/${page}`);
+      const { data } = await axios.get(`${API_URL}/api/seo/${page}`);
       if (data.success && data.data) {
         setFormData({
           metaTitle: data.data.metaTitle || '',
@@ -73,7 +74,7 @@ export default function GlobalSeo() {
     setLoading(true);
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      await axios.post('http://localhost:5001/api/seo', { ...formData, pageName: selectedPage }, {
+      await axios.post('${API_URL}/api/seo', { ...formData, pageName: selectedPage }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccessMsg('SEO configuration saved successfully!');

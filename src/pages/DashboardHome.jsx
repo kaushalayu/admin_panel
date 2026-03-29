@@ -7,6 +7,7 @@ import {
   MessageSquare, Bell, Zap, Server, Activity, Calendar,
   ChevronRight, Star, ExternalLink, Loader2, Plus, Settings
 } from 'lucide-react';
+import API_URL from '../config/api';
 
 const MotionDiv = ({ children, delay = 0, className = "" }) => (
   <motion.div
@@ -78,10 +79,10 @@ export default function DashboardHome() {
       const headers = { Authorization: `Bearer ${token}` };
       
       const [blogsRes, projectsRes, servicesRes, statsRes] = await Promise.allSettled([
-        axios.get('http://localhost:5001/api/blog/admin/all?limit=1', { headers }),
-        axios.get('http://localhost:5001/api/projects', { headers }),
-        axios.get('http://localhost:5001/api/services', { headers }),
-        axios.get('http://localhost:5001/admin/api/stats', { headers }),
+        axios.get('${API_URL}/api/blog/admin/all?limit=1', { headers }),
+        axios.get('${API_URL}/api/projects', { headers }),
+        axios.get('${API_URL}/api/services', { headers }),
+        axios.get('${API_URL}/admin/api/stats', { headers }),
       ]);
 
       setStats({

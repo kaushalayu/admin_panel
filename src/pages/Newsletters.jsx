@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Loader2, Search, Trash2, X, Eye, CheckCircle } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Newsletters() {
   const [subscribers, setSubscribers] = useState([]);
@@ -12,7 +13,7 @@ export default function Newsletters() {
   const fetchSubscribers = async () => {
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.get('http://localhost:5001/api/newsletter?limit=100', {
+      const { data } = await axios.get('${API_URL}/api/newsletter?limit=100', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (data.success) setSubscribers(data.data);
@@ -30,7 +31,7 @@ export default function Newsletters() {
   const handleUnsubscribe = async (email) => {
     if (window.confirm('Are you sure you want to forcibly unsubscribe this email?')) {
       try {
-        await axios.post('http://localhost:5001/api/newsletter/unsubscribe', { email });
+        await axios.post('${API_URL}/api/newsletter/unsubscribe', { email });
         fetchSubscribers();
         if (viewingSubscriber?.email === email) {
           setViewingSubscriber(prev => ({ ...prev, status: 'unsubscribed' }));

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Save, ArrowLeft, Loader2, Image as ImageIcon, Globe, FileText, Settings, Upload, Link as LinkIcon } from 'lucide-react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import API_URL from '../config/api';
 
 const quillModules = {
   toolbar: [
@@ -30,7 +31,7 @@ export default function BlogForm() {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:5001/api/blog/${id}`).then(({ data }) => {
+      axios.get(`${API_URL}/api/blog/${id}`).then(({ data }) => {
          if (data.success) {
            setFormData({
              ...data.data,
@@ -75,7 +76,7 @@ export default function BlogForm() {
 
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.post('http://localhost:5001/api/upload', uploadFormData, {
+      const { data } = await axios.post('${API_URL}/api/upload', uploadFormData, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -103,9 +104,9 @@ export default function BlogForm() {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       
       if (id) {
-        await axios.put(`http://localhost:5001/api/blog/${id}`, formData, config);
+        await axios.put(`${API_URL}/api/blog/${id}`, formData, config);
       } else {
-        await axios.post('http://localhost:5001/api/blog', formData, config);
+        await axios.post('${API_URL}/api/blog', formData, config);
       }
       navigate('/blogs');
     } catch (err) {

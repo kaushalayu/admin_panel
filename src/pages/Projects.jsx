@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Monitor, Loader2, Plus, Trash2, Edit, Save, X, ExternalLink, Upload, Image as ImageIcon } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Projects() {
   const [items, setItems] = useState([]);
@@ -18,7 +19,7 @@ export default function Projects() {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5001/api/projects');
+      const { data } = await axios.get('${API_URL}/api/projects');
       if (data.success) setItems(data.data);
     } catch (err) {
       console.error(err);
@@ -41,7 +42,7 @@ export default function Projects() {
 
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.post('http://localhost:5001/api/upload', formData, {
+      const { data } = await axios.post('${API_URL}/api/upload', formData, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -84,9 +85,9 @@ export default function Projects() {
       const headers = { Authorization: `Bearer ${token}` };
       
       if (editingId) {
-        await axios.put(`http://localhost:5001/api/projects/${editingId}`, formData, { headers });
+        await axios.put(`${API_URL}/api/projects/${editingId}`, formData, { headers });
       } else {
-        await axios.post('http://localhost:5001/api/projects', formData, { headers });
+        await axios.post('${API_URL}/api/projects', formData, { headers });
       }
       fetchData();
       resetForm();
@@ -102,7 +103,7 @@ export default function Projects() {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
         const token = localStorage.getItem('illusion_admin_token');
-        await axios.delete(`http://localhost:5001/api/projects/${id}`, {
+        await axios.delete(`${API_URL}/api/projects/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchData();

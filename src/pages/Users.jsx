@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users as UsersIcon, Loader2, Plus, Trash2, Shield, User as UserIcon, Code, Edit, X, Save, Eye } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -17,7 +18,7 @@ export default function Users() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.get('http://localhost:5001/api/auth/users', {
+      const { data } = await axios.get('${API_URL}/api/auth/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (data.success) setUsers(data.data);
@@ -62,11 +63,11 @@ export default function Users() {
         const updateData = { name: formData.name, role: formData.role };
         if (formData.password) updateData.password = formData.password;
         
-        await axios.put(`http://localhost:5001/api/auth/users/${editingUser._id}`, updateData, {
+        await axios.put(`${API_URL}/api/auth/users/${editingUser._id}`, updateData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post('http://localhost:5001/api/auth/create-user', formData, {
+        await axios.post('${API_URL}/api/auth/create-user', formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -84,7 +85,7 @@ export default function Users() {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
         const token = localStorage.getItem('illusion_admin_token');
-        await axios.delete(`http://localhost:5001/api/auth/users/${id}`, {
+        await axios.delete(`${API_URL}/api/auth/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchUsers();

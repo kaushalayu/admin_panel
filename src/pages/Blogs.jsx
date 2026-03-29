@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Plus, Edit, Trash2, Globe, Search, Loader2, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import API_URL from '../config/api';
 
 export default function Blogs() {
   const [blogs, setBlogs] = useState([]);
@@ -12,7 +13,7 @@ export default function Blogs() {
   const fetchBlogs = async () => {
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.get('http://localhost:5001/api/blog/admin/all?limit=50', {
+      const { data } = await axios.get('${API_URL}/api/blog/admin/all?limit=50', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (data.success) setBlogs(data.data);
@@ -31,7 +32,7 @@ export default function Blogs() {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
         const token = localStorage.getItem('illusion_admin_token');
-        await axios.delete(`http://localhost:5001/api/blog/${id}`, {
+        await axios.delete(`${API_URL}/api/blog/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchBlogs();

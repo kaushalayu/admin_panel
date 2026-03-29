@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Settings, Save, Loader2, Building, Phone, Mail, Globe, Share2, FileText, RefreshCw } from 'lucide-react';
+import API_URL from '../config/api';
 
-const API_BASE = 'http://localhost:5001';
+const API_BASE = API_URL;
 
 export default function SiteSettings() {
   const [settings, setSettings] = useState({});

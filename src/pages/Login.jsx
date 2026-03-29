@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Lock, Mail, Loader2 } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ export default function Login() {
     setError('');
 
     try {
-      const { data } = await axios.post('http://localhost:5001/api/auth/login', { email, password });
+      const { data } = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       
       if (data.success) {
         localStorage.setItem('illusion_admin_token', data.token);

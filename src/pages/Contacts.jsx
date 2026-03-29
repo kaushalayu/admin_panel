@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Loader2, Search, CheckCircle, Clock, X, Eye, Trash2, Mail, Phone, MapPin } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Contacts() {
   const [contacts, setContacts] = useState([]);
@@ -12,7 +13,7 @@ export default function Contacts() {
   const fetchContacts = async () => {
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.get('http://localhost:5001/api/contact?limit=100', {
+      const { data } = await axios.get('${API_URL}/api/contact?limit=100', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (data.success) setContacts(data.data);
@@ -30,7 +31,7 @@ export default function Contacts() {
   const handleStatusChange = async (id, status) => {
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      await axios.patch(`http://localhost:5001/api/contact/${id}/status`, { status }, {
+      await axios.patch(`${API_URL}/api/contact/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchContacts();
@@ -47,7 +48,7 @@ export default function Contacts() {
     if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
         const token = localStorage.getItem('illusion_admin_token');
-        await axios.delete(`http://localhost:5001/api/contact/${id}`, {
+        await axios.delete(`${API_URL}/api/contact/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchContacts();

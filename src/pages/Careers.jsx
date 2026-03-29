@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, Loader2, Plus, Trash2, Edit, Save, X, MapPin } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Careers() {
   const [items, setItems] = useState([]);
@@ -16,7 +17,7 @@ export default function Careers() {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5001/api/jobs');
+      const { data } = await axios.get('${API_URL}/api/jobs');
       if (data.success) setItems(data.data);
     } catch (err) {
       console.error(err);
@@ -60,9 +61,9 @@ export default function Careers() {
       const headers = { Authorization: `Bearer ${token}` };
       
       if (editingId) {
-        await axios.put(`http://localhost:5001/api/jobs/${editingId}`, payload, { headers });
+        await axios.put(`${API_URL}/api/jobs/${editingId}`, payload, { headers });
       } else {
-        await axios.post('http://localhost:5001/api/jobs', payload, { headers });
+        await axios.post('${API_URL}/api/jobs', payload, { headers });
       }
       fetchData();
       resetForm();
@@ -78,7 +79,7 @@ export default function Careers() {
     if (window.confirm('Are you sure you want to delete this job posting?')) {
       try {
         const token = localStorage.getItem('illusion_admin_token');
-        await axios.delete(`http://localhost:5001/api/jobs/${id}`, {
+        await axios.delete(`${API_URL}/api/jobs/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchData();

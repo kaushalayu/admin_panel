@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code as CodeIcon, Loader2, Plus, Trash2, Edit, Save, X } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Services() {
   const [items, setItems] = useState([]);
@@ -16,7 +17,7 @@ export default function Services() {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5001/api/services');
+      const { data } = await axios.get('${API_URL}/api/services');
       if (data.success) setItems(data.data);
     } catch (err) {
       console.error(err);
@@ -52,9 +53,9 @@ export default function Services() {
       const headers = { Authorization: `Bearer ${token}` };
       
       if (editingId) {
-        await axios.put(`http://localhost:5001/api/services/${editingId}`, formData, { headers });
+        await axios.put(`${API_URL}/api/services/${editingId}`, formData, { headers });
       } else {
-        await axios.post('http://localhost:5001/api/services', formData, { headers });
+        await axios.post('${API_URL}/api/services', formData, { headers });
       }
       fetchData();
       resetForm();
@@ -70,7 +71,7 @@ export default function Services() {
     if (window.confirm('Are you sure you want to delete this service?')) {
       try {
         const token = localStorage.getItem('illusion_admin_token');
-        await axios.delete(`http://localhost:5001/api/services/${id}`, {
+        await axios.delete(`${API_URL}/api/services/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchData();

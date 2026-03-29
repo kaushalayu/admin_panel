@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import { UploadCloud, Link as LinkIcon, Loader2, Image as ImageIcon, X } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function ImageUpload({ label, value, onChange, placeholder = "Upload an image or paste a URL" }) {
   const [uploading, setUploading] = useState(false);
@@ -22,7 +23,7 @@ export default function ImageUpload({ label, value, onChange, placeholder = "Upl
     formData.append('image', file);
 
     try {
-      const { data } = await axios.post('http://localhost:5001/api/upload', formData, {
+      const { data } = await axios.post('${API_URL}/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       if (data.success) {

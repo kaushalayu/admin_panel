@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Save, ArrowLeft, Loader2, Upload, X, Plus } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function TeamForm() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ export default function TeamForm() {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:5001/api/team/${id}`).then(({ data }) => {
+      axios.get(`${API_URL}/api/team/${id}`).then(({ data }) => {
         if (data.success) {
           setFormData({
             ...data.data,
@@ -66,7 +67,7 @@ export default function TeamForm() {
 
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.post('http://localhost:5001/api/upload', uploadFormData, {
+      const { data } = await axios.post('${API_URL}/api/upload', uploadFormData, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -94,9 +95,9 @@ export default function TeamForm() {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       
       if (id) {
-        await axios.put(`http://localhost:5001/api/team/${id}`, formData, config);
+        await axios.put(`${API_URL}/api/team/${id}`, formData, config);
       } else {
-        await axios.post('http://localhost:5001/api/team', formData, config);
+        await axios.post('${API_URL}/api/team', formData, config);
       }
       navigate('/teams');
     } catch (err) {

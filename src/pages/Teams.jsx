@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Plus, Search, Loader2, Edit, Trash2, Image as ImageIcon, Users } from 'lucide-react';
+import API_URL from '../config/api';
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
@@ -12,7 +13,7 @@ export default function Teams() {
   const fetchTeams = async () => {
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      const { data } = await axios.get('http://localhost:5001/api/team/admin/all', {
+      const { data } = await axios.get('${API_URL}/api/team/admin/all', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (data.success) {
@@ -34,7 +35,7 @@ export default function Teams() {
     
     try {
       const token = localStorage.getItem('illusion_admin_token');
-      await axios.delete(`http://localhost:5001/api/team/${id}`, {
+      await axios.delete(`${API_URL}/api/team/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTeams(teams.filter(t => t._id !== id));
